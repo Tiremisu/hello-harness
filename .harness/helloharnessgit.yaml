@@ -4,20 +4,13 @@ pipeline:
   projectIdentifier: helloharness
   orgIdentifier: default
   tags: {}
-  properties:
-    ci:
-      codebase:
-        connectorRef: github
-        repoName: https://github.com/wings-software/harness-docs.git
-        build: <+input>
   stages:
     - stage:
         name: build
         identifier: build
-        description: ""
         type: CI
         spec:
-          cloneCodebase: true
+          cloneCodebase: false
           execution:
             steps:
               - step:
