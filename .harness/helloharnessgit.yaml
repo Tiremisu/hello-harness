@@ -1,0 +1,76 @@
+pipeline:
+  name: hello-harness-git
+  identifier: helloharnessgit
+  projectIdentifier: helloharness
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: github
+        repoName: https://github.com/wings-software/harness-docs.git
+        build: <+input>
+  stages:
+    - stage:
+        name: build
+        identifier: build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: step1
+                  identifier: step1
+                  spec:
+                    connectorRef: account.harnessImage
+                    image: golang:1.20rc2-buster
+                    shell: Sh
+                    command: |
+                      echo "========Step1========="
+                      ls
+                      echo $PATH
+              - step:
+                  type: Run
+                  name: step2
+                  identifier: step2
+                  spec:
+                    connectorRef: account.harnessImage
+                    image: golang:1.20rc2-buster
+                    shell: Bash
+                    command: |-
+                      echo "=======Step 2======"
+                      pwd
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+    - stage:
+        name: Approve
+        identifier: Approve
+        description: ""
+        type: Approval
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: Need Approve
+                  identifier: Need_Approve
+                  type: HarnessApproval
+                  timeout: 1d
+                  spec:
+                    approvalMessage: |-
+                      Please review the following information
+                      and approve the pipeline progression
+                    includePipelineExecutionHistory: true
+                    approvers:
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                      userGroups:
+                        - account._account_all_users
+                    approverInputs: []
+        tags: {}
