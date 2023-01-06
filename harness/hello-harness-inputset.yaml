@@ -1,0 +1,14 @@
+inputSet:
+  identifier: "helloharnessinputset"
+  name: "hello-harness-inputset"
+  orgIdentifier: "default"
+  projectIdentifier: "helloharness"
+  pipeline:
+    identifier: "helloharnessgit"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "main"
